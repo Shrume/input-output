@@ -1,11 +1,118 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .top {
+            width: 100%;
+            height: 50vh;
+        }
+
+        .bottom {
+            width: 100%;
+            height: 50vh;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
 </head>
+
 <body>
-    Hello World!
+    <div class="top" id="top-section"></div>
+    <div class="bottom" id="bottom-section">
+        <div>
+            <input type="range" min="0" max="255" id="r-inputSlider">
+            <input type="number" min="0" max="255" id="r-inputBox">
+        </div>
+
+        <div>
+            <input type="range" min="0" max="255" id="g-inputSlider">
+            <input type="number" min="0" max="255" id="g-inputBox">
+        </div>
+
+        <div>
+            <input type="range" min="0" max="255" id="b-inputSlider">
+            <input type="number" min="0" max="255" id="b-inputBox">
+        </div>
+
+        <!--
+        <div>
+           <button onclick= "checkColor();">Check</button>
+        </div>
+        -->
+
+    </div>
+
+    <script>
+        function getRandomColor() {
+            let r = Math.floor(Math.random() * 256);
+            let g = Math.floor(Math.random() * 256);
+            let b = Math.floor(Math.random() * 256);
+            return [r, g, b];
+;
+        }
+
+        function applyRandomColor() {
+            let randomColor = getRandomColor();
+            document.getElementById("top-section").style.backgroundColor = "rgb(" + randomColor[0] + ", " + randomColor[1] + ", " + randomColor[2] + ")";
+        }
+        
+        applyRandomColor();
+
+        function updateBottomColor() {
+            let r = document.querySelector(`#r-inputSlider`).value;
+            let g = document.querySelector(`#g-inputSlider`).value;
+            let b = document.querySelector(`#b-inputSlider`).value;
+            document.getElementById("bottom-section").style.backgroundColor = "rgb(" + r + ", " + g + ", " + b + ")";
+        }
+
+        // element.addEventListener(event, function, useCapture); //
+        function setupInputSync(slider, box) {
+            slider.addEventListener("input", function () {
+                box.value = slider.value;
+                updateBottomColor();
+            });
+
+            box.addEventListener("input", function () {
+                if (box.value >= 0 && box.value <= 255) {
+                    slider.value = box.value;
+                    updateBottomColor();
+                } else {
+                    alert("Please enter a number between 0-255");
+                }
+            });
+        }
+
+        /* function checkColor() {
+            let randomColor = getRandomColor();
+            Console.log(Math.abs(getRandomColor().r - slider.value));
+        } */
+
+        let rSlider = document.querySelector("#r-inputSlider");
+        let gSlider = document.querySelector("#g-inputSlider");
+        let bSlider = document.querySelector("#b-inputSlider");
+
+        let rBox = document.querySelector("#r-inputBox");
+        let gBox = document.querySelector("#g-inputBox");
+        let bBox = document.querySelector("#b-inputBox");
+
+        setupInputSync(rSlider, rBox);
+        setupInputSync(gSlider, gBox);
+        setupInputSync(bSlider, bBox);
+
+        updateBottomColor();
+
+
+    </script>
+
 </body>
+
+
+
 </html>
